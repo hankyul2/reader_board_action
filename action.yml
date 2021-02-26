@@ -1,0 +1,92 @@
+# This is a basic workflow to help you get started with Actions
+name: Public Ranking Action
+
+description: 'Call Score API'
+inputs:
+  other_repo:  # id of input
+    description: 'ScoreBoard Repo'
+    required: true
+  public_name:
+    required: true
+  public_author:
+    required: true
+  pat: # id of input
+    description: 'Personal Access Token'
+    required: true
+  name: # id of input
+    description: 'Other Name'
+    required: true
+  repo: # id of input
+    description: 'Other Repo Name'
+    required: true
+  author: # id of input
+    description: 'Author Email'
+    required: true
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  run:
+    name: Lint with ESLint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          
+      - name: Check out score repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ inputs.other_repo }}
+          token: ${{ inputs.pat }}
+          path: private
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f private/requirements.txt ]; then pip install -r private/requirements.txt; fi
+          
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          path: public
+    
+      - name: Updating README.MD
+        run: |
+          cp public/README.md private/README.md;
+          cp -r public/submission/* private/submission/;
+          cd private/;
+          python ReaderBoard/main.py;
+          cd ../
+          
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@master
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.pat }}
+        with:
+          source-directory: 'private'
+          destination-github-username: ${{ inputs.name }}
+          destination-repository-name: ${{ inputs.repo }}
+          user-email: ${{ inputs.author }}
+          target-branch: 'main'
+          commit-message: "Score ans from public repo"
+      
+      - name: copy and chdir
+        run: |
+          cp private/README.md public/README.md;
+          cp -r private/Log/* public/Log/;
+          cp -r private/submission/* public/submission/;
+          
+      - name: commit to readerboard
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: ${{ inputs.public_name }}
+          author_email: ${{ inputs.public_author }}
+          message: 'ReaderBoard Update'
+          add: '.'
+          cwd: './public'
+
