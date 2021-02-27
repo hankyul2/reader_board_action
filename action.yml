@@ -3,6 +3,8 @@ name: Public Ranking Action
 
 description: 'Call Score API'
 inputs:
+  public_repo:
+    required: true
   public_name:
     required: true
   public_author:
@@ -23,6 +25,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
+    - ${{ inputs.public_repo }}
     - ${{ inputs.public_name }}
     - ${{ inputs.public_author }}
     - ${{ inputs.private_repo }}
