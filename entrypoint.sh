@@ -19,7 +19,7 @@ git clone --single-branch --branch main "https://$API_TOKEN_GITHUB@github.com/$P
 
 PRIVATE_DIR=$(mktemp -d)
 echo "Cloning private git repository"
-git clone --single-branch --branch main "https://$API_TOKEN_GITHUB@github.com/$PRIVATE_NAME/$PRIVATE_REPO.git" "$PRIVATE_REPO"
+git clone --single-branch --branch main "https://$API_TOKEN_GITHUB@github.com/$PRIVATE_NAME/$PRIVATE_REPO.git" "$PRIVATE_DIR"
 
 cp -r "$PUBLIC_DIR"/submission/* "$PRIVATE_DIR"/submission/
 cp "$PUBLIC_DIR"/README.md "$PRIVATE_DIR"/README.md
