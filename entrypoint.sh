@@ -4,6 +4,9 @@ set -e  # if a command fails it stops the execution
 set -u  # script fails if trying to access to an undefined variable
 
 echo "Starts"
+echo "$INPUT_PUBLIC_AUTHOR"
+echo "$INPUT_PUBLIC_PUBLIC_NAME"
+echo "$GITHUB_REPOSITORY"
 
 CLONE_DIR=$(mktemp -d)
 echo "Cloning public git repository"
