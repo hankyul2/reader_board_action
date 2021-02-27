@@ -5,7 +5,7 @@ set -u  # script fails if trying to access to an undefined variable
 
 echo "Starts"
 
-CLONE_DIR = $(mktemp - d)
+CLONE_DIR = $(mktemp -d)
 echo "Cloning public git repository"
 git config --global user.email "$INPUT_PUBLIC_AUTHOR"
 git config --global user.name "$INPUT_PUBLIC_NAME"
