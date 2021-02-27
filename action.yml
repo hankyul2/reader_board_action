@@ -27,15 +27,12 @@ inputs:
 
 runs:
   using: "composite"
-  strategy:
-    matrix:
-      python-version: [3.8]
 
   steps:
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.8
 
     - name: Check out score repo
       uses: actions/checkout@v2
@@ -65,7 +62,7 @@ runs:
     - name: Pushes to another repository
       uses: cpina/github-action-push-to-another-repository@master
       env:
-        API_TOKEN_GITHUB: ${{ secrets.pat }}
+        API_TOKEN_GITHUB: ${{ inputs.pat }}
       with:
         source-directory: 'private'
         destination-github-username: ${{ inputs.name }}
