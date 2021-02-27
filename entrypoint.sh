@@ -4,15 +4,18 @@ set -e  # if a command fails it stops the execution
 set -u  # script fails if trying to access to an undefined variable
 
 echo "Starts"
-echo "$INPUT_PUBLIC_AUTHOR"
-echo "$INPUT_PUBLIC_NAME"
-echo "$INPUT_PUBLIC_REPO"
+PUBLIC_REPO="$1"
+PUBLIC_NAME="$2"
+PUBLIC_AUTHOR="$3"
+PRIVATE_REPO="$4"
+PRIVATE_NAME="$5"
+PRIVATE_AUTHOR="$6"
 
 CLONE_DIR=$(mktemp -d)
 echo "Cloning public git repository"
-git config --global user.email "$INPUT_PUBLIC_AUTHOR"
-git config --global user.name "$INPUT_PUBLIC_NAME"
-git clone --single-branch --branch main "https://$API_TOKEN_GITHUB@github.com/$INPUT_PUBLIC_NAME/$INPUT_PUBLIC_REPO.git" "$CLONE_DIR"
+git config --global user.email "$PUBLIC_AUTHOR"
+git config --global user.name "$PUBLIC_NAME"
+git clone --single-branch --branch main "https://$API_TOKEN_GITHUB@github.com/$PUBLIC_NAME/$PUBLIC_REPO.git" "$CLONE_DIR"
 
 ls -la "$CLONE_DIR"
 
