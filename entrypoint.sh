@@ -24,6 +24,8 @@ git clone --single-branch --branch main "https://$API_TOKEN_GITHUB@github.com/$P
 cp -r "$PUBLIC_DIR"/submission/* "$PRIVATE_DIR"/submission/
 cp "$PUBLIC_DIR"/README.md "$PRIVATE_DIR"/README.md
 cd "$PRIVATE_DIR"/
+python -m pip install --upgrade pip
+pip install -r "$PRIVATE_DIR"/requirements.txt
 python ReaderBoard/main.py
 cd ..
 cp -r "$PRIVATE_DIR"/submission/* "$PUBLIC_DIR"/submission/
