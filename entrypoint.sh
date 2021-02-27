@@ -35,14 +35,17 @@ git config --global user.name "$PRIVATE_NAME"
 git add .
 git diff-index --quiet HEAD || git commit --message "This commit from public repository. Private log is updated"
 git push origin --set-upstream main
+rm -rf "$PUBLIC_DIR"
+cd "$PRIVATE_DIR"
 
-cd "$PUBLIC_DIR"
 echo "Commit to Public Repo"
 git config --global user.email "$PUBLIC_AUTHOR"
 git config --global user.name "$PUBLIC_NAME"
 git add .
 git diff-index --quiet HEAD || git commit --message "This commit from private repository. Public ReaderBoard is updated"
 git push origin --set-upstream main
+rm -rf "$PUBLIC_DIR"
+
 
 time=$(date)
 if true ; then
