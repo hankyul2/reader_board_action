@@ -13,8 +13,6 @@ PRIVATE_AUTHOR="$6"
 
 PUBLIC_DIR=$(mktemp -d)
 echo "Cloning public git repository"
-git config --global user.email "$PUBLIC_AUTHOR"
-git config --global user.name "$PUBLIC_NAME"
 git clone --single-branch --branch main "https://$API_TOKEN_GITHUB@github.com/$PUBLIC_NAME/$PUBLIC_REPO.git" "$PUBLIC_DIR"
 
 PRIVATE_DIR=$(mktemp -d)
@@ -27,13 +25,27 @@ cd "$PRIVATE_DIR"/
 python -m pip install --upgrade pip
 pip install -r "$PRIVATE_DIR"/requirements.txt
 python ReaderBoard/main.py
-cd ..
 cp -r "$PRIVATE_DIR"/submission/* "$PUBLIC_DIR"/submission/
 cp -r "$PRIVATE_DIR"/Log/* "$PUBLIC_DIR"/Log/
 cp "$PRIVATE_DIR"/README.md "$PUBLIC_DIR"/README.md
 
+echo "Commit to Private Repo"
+git config --global user.email "$PRIVATE_AUTHOR"
+git config --global user.name "$PRIVATE_NAME"
+git add .
+git diff-index --quiet HEAD || git commit --message "This commit from public repository. Private log is updated"
+git push origin --set-upstream main
+
+cd "$PUBLIC_DIR"
+echo "Commit to Public Repo"
+git config --global user.email "$PUBLIC_AUTHOR"
+git config --global user.name "$PUBLIC_NAME"
+git add .
+git diff-index --quiet HEAD || git commit --message "This commit from private repository. Public ReaderBoard is updated"
+git push origin --set-upstream main
+
 time=$(date)
 if true ; then
-  echo "Game over!"
+  echo "Public Score Board is updated at $time"
   exit 0
 fi
