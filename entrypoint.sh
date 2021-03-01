@@ -33,7 +33,7 @@ echo "Commit to Private Repo"
 git config --global user.email "$PRIVATE_AUTHOR"
 git config --global user.name "$PRIVATE_NAME"
 git add .
-git diff-index --quiet HEAD || git commit --message "This commit from public repository. Private log is updated"
+git diff-index --quiet HEAD || git commit --message "[CI Skip]Private ReaderBoard Update"
 git push origin --set-upstream main
 rm -rf "$PRIVATE_DIR"
 cd "$PUBLIC_DIR"
@@ -42,7 +42,7 @@ echo "Commit to Public Repo"
 git config --global user.email "$PUBLIC_AUTHOR"
 git config --global user.name "$PUBLIC_NAME"
 git add .
-git diff-index --quiet HEAD || git commit --message "This commit from private repository. Public ReaderBoard is updated"
+git diff-index --quiet HEAD || git commit --message "[CI Skip]Public ReaderBoard Update"
 git push origin --set-upstream main
 rm -rf "$PUBLIC_DIR"
 
